@@ -1,0 +1,29 @@
+package com.at.bookcircle.handler;
+
+import lombok.Getter;
+import org.springframework.http.HttpStatus;
+
+public enum BusinessErrorCodes {
+
+    NO_CODE(0, HttpStatus.NOT_IMPLEMENTED, "No code"),
+    INCORRECT_PASSWORD(300, HttpStatus.BAD_REQUEST, "Incorrect password"),
+    NEW_PASSWORD_DOES_NOT_MATCH(301, HttpStatus.BAD_REQUEST, "New password does not match"),
+    ACCOUNT_LOCKED(302, HttpStatus.FORBIDDEN, "User account is locked"),
+    ACCOUNT_DISABLES(303, HttpStatus.FORBIDDEN, "User account is disabled"),
+    BAD_CREDENTIAL(304, HttpStatus.FORBIDDEN, "Email and/or password is incorrect"),
+
+    ;
+
+    @Getter
+    private final int code;
+    @Getter
+    private final HttpStatus httpStatus;
+    @Getter
+    private final String description;
+
+    BusinessErrorCodes(int code, HttpStatus httpStatus, String description) {
+        this.code = code;
+        this.httpStatus = httpStatus;
+        this.description = description;
+    }
+}

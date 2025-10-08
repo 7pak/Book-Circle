@@ -1,0 +1,29 @@
+services:
+  postgres:
+    container_name: postgres-sql-bc
+    image: postgres
+    environment:
+      POSTGRES_USER: spring_user
+      POSTGRES_PASSWORD: 359248
+      POSTGRES_DB: book_circle
+    volumes:
+      - postgres:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+    networks:
+      - spring-bc
+    restart: unless-stopped
+  mail-dev:
+    container_name: mail-dev-bc
+    image: maildev/maildev
+    ports:
+      - 1080:1080
+      - 1025:1025
+
+networks:
+  spring-bc:
+    driver: bridge
+volumes:
+  postgres:
+    driver: local
+
