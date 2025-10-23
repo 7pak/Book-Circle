@@ -1,5 +1,6 @@
 package com.at.bookcircle.handler;
 
+import com.at.bookcircle.exception.OperationNotPermittedException;
 import jakarta.mail.MessagingException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,6 +44,7 @@ public class GlobalExceptionHandler {
                 .error(BusinessErrorCodes.BAD_CREDENTIAL.getDescription())
                 .build());
     }
+
     @ExceptionHandler(MessagingException.class)
     public ResponseEntity<ExceptionResponse> handleException(MessagingException e) {
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ExceptionResponse.builder()
@@ -67,8 +69,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ExceptionResponse> handleException(Exception e) {
         e.printStackTrace();
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(ExceptionResponse.builder()
-                        .businessErrorDescription("Internal server error, contact the admin")
-                         .error(e.getMessage())
+                .businessErrorDescription("Internal server error, contact the admin")
+                .error(e.getMessage())
+                .build());
+    }
+
+    @ExceptionHandler(OperationNotPermittedException.class)
+    public ResponseEntity<ExceptionResponse> handleException(OperationNotPermittedException e) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ExceptionResponse.builder()
+                .error(e.getMessage())
                 .build());
     }
 
